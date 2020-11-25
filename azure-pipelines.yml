@@ -20,8 +20,10 @@ jobs:
   dependsOn: One
   pool:
     vmImage: 'ubuntu-latest'
+  variables:
+    SurveyJSVersion: $[ dependencies.Storage.outputs['One.SurveyJSVersion'] ]
   steps:
   - powershell: |
-      $version = "$(dependencies.Storage.outputs['One.SurveyJSVersion'])"
+      $version = "$(SurveyJSVersion)"
       echo $version
     displayName: 'see SurveyJSVersion'
