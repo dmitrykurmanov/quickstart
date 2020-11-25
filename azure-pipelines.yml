@@ -13,7 +13,7 @@ jobs:
   steps:
   - powershell: |
       $version = "aaaaaaaa"
-      Write-Host "##vso[task.setvariable variable=SurveyJSVersion;]$version"
+      Write-Host "##vso[task.setvariable variable=SurveyJSVersion;isOutput=true]$version"
     displayName: 'setup SurveyJSVersion'
 
 - job: Two
@@ -22,6 +22,6 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - powershell: |
-      $version = "$(SurveyJSVersion)"
+      $version = $[ dependencies.Storage.outputs['One.SurveyJSVersion'] ]
       echo $version
     displayName: 'see SurveyJSVersion'
