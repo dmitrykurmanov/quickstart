@@ -25,7 +25,6 @@ jobs:
   steps:
   - powershell: |
       $version = "$(SurveyJSVersion)"
-      Write-Host 0 $version
-      echo 1 "$(SurveyJSVersion)"
-      echo 2 "$version"
+      Write-Host "$env:SurveyJSVersion"
+      Write-Host "$version"
     displayName: 'see SurveyJSVersion'
