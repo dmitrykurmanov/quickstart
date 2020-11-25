@@ -1,0 +1,27 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+jobs:
+- job: One
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - powershell: |
+      $version = "aaaaaaaa"
+      Write-Host "##vso[task.setvariable variable=SurveyJSVersion;]$version"
+    displayName: 'setup SurveyJSVersion'
+
+- job: Two
+  dependsOn: One
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - powershell: |
+      $version = "$(SurveyJSVersion)"
+      echo $version
+    displayName: 'see SurveyJSVersion'
