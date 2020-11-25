@@ -16,8 +16,18 @@ jobs:
         $version = "aaaaaaaa2"
         Write-Host "##vso[task.setvariable variable=SurveyJSVersion;isOutput=true]$version"
 
-- job: Two
+- job: Between
   dependsOn: One
+  pool:
+    vmImage: 'ubuntu-latest'
+  variables:
+    SurveyJSVersion: $[ dependencies.One.outputs['varContainer.SurveyJSVersion'] ]
+  steps:
+  - powershell: |
+      Write-Host "##vso[task.setvariable variable=SurveyJSVersion;isOutput=true]$version"
+
+- job: Two
+  dependsOn: Between
   pool:
     vmImage: 'ubuntu-latest'
   variables:
