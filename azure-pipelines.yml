@@ -3,44 +3,30 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-jobs: 
-- job: job_deploy_infrastructure
-  steps:
-  - bash: |
-      SOMEVALUE="bleh"
-      echo "##vso[task.setvariable variable=someName;isOutput=true;]$SOMEVALUE"
-      echo "variable value is $(someName)"
-- job: job_deploy_code
-  dependsOn: ['job_deploy_infrastructure']
-  variables: 
-    someName: $[ dependencies.job_deploy_infrastructure.outputs['someName'] ]
+jobs:
+- job: One
+  pool:
+    vmImage: 'ubuntu-latest'
   steps: 
-  - bash: |
-      "the variable value is $(someName)"
+  - task: PowerShell@2
+    name: "psJob"
+    inputs:
+      targetType: 'inline'
+      script: |
+        $version = "aaaaaaaa2"
+        Write-Host "##vso[task.setvariable variable=SurveyJSVersion;isOutput=true]$version"
 
-# jobs:
-# - job: One
-#   pool:
-#     vmImage: 'ubuntu-latest'
-#   steps: 
-#   - task: PowerShell@2
-#     name: "psJob"
-#     inputs:
-#       targetType: 'inline'
-#       script: |
-#         $version = "aaaaaaaa2"
-#         Write-Host "##vso[task.setvariable variable=SurveyJSVersion;isOutput=true]$version"
-
-# - job: Two
-#   dependsOn: One
-#   pool:
-#     vmImage: 'ubuntu-latest'
-#   variables:
-#     SurveyJSVersion: $[ dependencies.One.outputs['psJob.SurveyJSVersion'] ]
-#   steps:
-#   - powershell: |
-#       $version = "$(SurveyJSVersion)"
-#       Write-Host "$env:SurveyJSVersion"
-#       Write-Host "$version"
-#       echo "variable value is $(someName)"
-#     displayName: 'see SurveyJSVersion'
+- job: Two
+  dependsOn: One
+  pool:
+    vmImage: 'ubuntu-latest'
+  variables:
+    SurveyJSVersion: $[ dependencies.One.outputs['psJob.SurveyJSVersion'] ]
+  steps:
+  - powershell: |
+      $version = "$(SurveyJSVersion)"
+      Write-Host "1 $env:SurveyJSVersion"
+      Write-Host "2 $version"
+      echo "3 variable value is $(SurveyJSVersion)"
+      echo "4 variable value is $version"
+    displayName: 'see SurveyJSVersion'
