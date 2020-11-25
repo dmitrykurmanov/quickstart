@@ -22,6 +22,6 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - powershell: |
-      $version = $[ dependencies.Storage.outputs['One.SurveyJSVersion'] ]
+      $version = "$(dependencies.Storage.outputs['One.SurveyJSVersion'])"
       echo $version
     displayName: 'see SurveyJSVersion'
