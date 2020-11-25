@@ -9,7 +9,7 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps: 
   - task: PowerShell@2
-    name: "psJob"
+    # name: "psJob"
     inputs:
       targetType: 'inline'
       script: |
@@ -21,7 +21,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    SurveyJSVersion: $[ dependencies.One.outputs['psJob.SurveyJSVersion'] ]
+    SurveyJSVersion: $[ dependencies.One.outputs['SurveyJSVersion'] ]
   steps:
   - powershell: |
       $version = "$(SurveyJSVersion)"
